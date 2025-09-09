@@ -29,7 +29,7 @@ const createDefaultAdmin = async () => {
       phone: "03001234567",
       password: "Admin@123",
       gender: "Male",
-      dob: new Date("1990-01-01"),
+      dob: new Date("2002-06-06"),
       aadhar: "123456789012",
       role: "Admin"
     });
