@@ -222,337 +222,386 @@ const DepartmentManagement = () => {
 
   return (
     <div className="page">
-      <div className="container">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
-          <h1>Department Management</h1>
+      <div className="department-management">
+        {/* Header Section */}
+        <div className="department-header">
+          <div className="header-content">
+            <h1>Department Management</h1>
+            <p>Manage hospital departments, services, and medical specialties</p>
+          </div>
           <button 
-            className="btn"
+            className="add-department-btn"
             onClick={() => setShowForm(true)}
-            style={{ background: "#271776", color: "white" }}
           >
+            <span className="btn-icon">+</span>
             Add New Department
           </button>
         </div>
 
+        {/* Form Modal */}
         {showForm && (
-          <div style={{ 
-            background: "white", 
-            padding: "30px", 
-            borderRadius: "10px", 
-            marginBottom: "30px",
-            boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
-          }}>
-            <h2>{editingDepartment ? "Edit Department" : "Add New Department"}</h2>
-            <form onSubmit={handleSubmit}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-                <div>
-                  <label>Department Name *</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div>
-                  <label>Head of Department</label>
-                  <input
-                    type="text"
-                    name="headOfDepartment"
-                    value={formData.headOfDepartment}
-                    onChange={handleInputChange}
-                  />
-                </div>
+          <div className="form-modal-overlay">
+            <div className="form-modal">
+              <div className="modal-header">
+                <h2>{editingDepartment ? "Edit Department" : "Add New Department"}</h2>
+                <button className="close-btn" onClick={resetForm}>×</button>
               </div>
+              
+              <form onSubmit={handleSubmit} className="department-form">
+                {/* Basic Information */}
+                <div className="form-section">
+                  <h3>Basic Information</h3>
+                  <div className="form-grid">
+                    <div className="form-group">
+                      <label>Department Name *</label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="form-input"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Head of Department</label>
+                      <input
+                        type="text"
+                        name="headOfDepartment"
+                        value={formData.headOfDepartment}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                  </div>
 
-              <div style={{ marginBottom: "20px" }}>
-                <label>Description *</label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  rows="3"
-                  required
-                />
-              </div>
-
-              <div style={{ marginBottom: "20px" }}>
-                <label>Detailed Information *</label>
-                <textarea
-                  name="detailedInfo"
-                  value={formData.detailedInfo}
-                  onChange={handleInputChange}
-                  rows="5"
-                  required
-                />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-                <div>
-                  <label>Services (comma separated)</label>
-                  <textarea
-                    name="services"
-                    value={formData.services}
-                    onChange={handleInputChange}
-                    rows="3"
-                    placeholder="Surgery, Consultation, Emergency Care"
-                  />
-                </div>
-                <div>
-                  <label>Facilities (comma separated)</label>
-                  <textarea
-                    name="facilities"
-                    value={formData.facilities}
-                    onChange={handleInputChange}
-                    rows="3"
-                    placeholder="ICU, Operation Theater, Lab"
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-                <div>
-                  <label>Phone</label>
-                  <input
-                    type="tel"
-                    name="contactInfo.phone"
-                    value={formData.contactInfo.phone}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <label>Email</label>
-                  <input
-                    type="email"
-                    name="contactInfo.email"
-                    value={formData.contactInfo.email}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <label>Location</label>
-                  <input
-                    type="text"
-                    name="contactInfo.location"
-                    value={formData.contactInfo.location}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginBottom: "20px" }}>
-                <div>
-                  <label>Weekday Hours</label>
-                  <input
-                    type="text"
-                    name="workingHours.weekdays"
-                    value={formData.workingHours.weekdays}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div>
-                  <label>Weekend Hours</label>
-                  <input
-                    type="text"
-                    name="workingHours.weekends"
-                    value={formData.workingHours.weekends}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-
-              <div style={{ marginBottom: "20px" }}>
-                <label>Department Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </div>
-
-              {/* Disease Management Section */}
-              <div style={{ border: "1px solid #ddd", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
-                <h3>Common Diseases</h3>
-                
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
-                  <div>
-                    <label>Disease Name</label>
-                    <input
-                      type="text"
-                      value={diseaseForm.name}
-                      onChange={(e) => setDiseaseForm(prev => ({ ...prev, name: e.target.value }))}
+                  <div className="form-group">
+                    <label>Description *</label>
+                    <textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleInputChange}
+                      rows="3"
+                      required
+                      className="form-textarea"
                     />
                   </div>
-                  <div>
-                    <label>Description</label>
-                    <input
-                      type="text"
-                      value={diseaseForm.description}
-                      onChange={(e) => setDiseaseForm(prev => ({ ...prev, description: e.target.value }))}
+
+                  <div className="form-group">
+                    <label>Detailed Information *</label>
+                    <textarea
+                      name="detailedInfo"
+                      value={formData.detailedInfo}
+                      onChange={handleInputChange}
+                      rows="5"
+                      required
+                      className="form-textarea"
                     />
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "15px", marginBottom: "15px" }}>
-                  <div>
-                    <label>Symptoms (comma separated)</label>
-                    <input
-                      type="text"
-                      value={diseaseForm.symptoms}
-                      onChange={(e) => setDiseaseForm(prev => ({ ...prev, symptoms: e.target.value }))}
-                    />
-                  </div>
-                  <div>
-                    <label>Treatments (comma separated)</label>
-                    <input
-                      type="text"
-                      value={diseaseForm.treatments}
-                      onChange={(e) => setDiseaseForm(prev => ({ ...prev, treatments: e.target.value }))}
-                    />
+                {/* Services & Facilities */}
+                <div className="form-section">
+                  <h3>Services & Facilities</h3>
+                  <div className="form-grid">
+                    <div className="form-group">
+                      <label>Services (comma separated)</label>
+                      <textarea
+                        name="services"
+                        value={formData.services}
+                        onChange={handleInputChange}
+                        rows="3"
+                        placeholder="Surgery, Consultation, Emergency Care"
+                        className="form-textarea"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Facilities (comma separated)</label>
+                      <textarea
+                        name="facilities"
+                        value={formData.facilities}
+                        onChange={handleInputChange}
+                        rows="3"
+                        placeholder="ICU, Operation Theater, Lab"
+                        className="form-textarea"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={addDisease}
-                  style={{ background: "#27ae60", color: "white", padding: "8px 16px", border: "none", borderRadius: "4px" }}
-                >
-                  Add Disease
-                </button>
+                {/* Contact Information */}
+                <div className="form-section">
+                  <h3>Contact Information</h3>
+                  <div className="form-grid-3">
+                    <div className="form-group">
+                      <label>Phone</label>
+                      <input
+                        type="tel"
+                        name="contactInfo.phone"
+                        value={formData.contactInfo.phone}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Email</label>
+                      <input
+                        type="email"
+                        name="contactInfo.email"
+                        value={formData.contactInfo.email}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Location</label>
+                      <input
+                        type="text"
+                        name="contactInfo.location"
+                        value={formData.contactInfo.location}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-                {formData.commonDiseases.length > 0 && (
-                  <div style={{ marginTop: "20px" }}>
-                    <h4>Added Diseases:</h4>
-                    {formData.commonDiseases.map((disease, index) => (
-                      <div key={index} style={{ 
-                        background: "#f9f9f9", 
-                        padding: "10px", 
-                        margin: "10px 0", 
-                        borderRadius: "4px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center"
-                      }}>
-                        <div>
-                          <strong>{disease.name}</strong>
-                          <p style={{ margin: "5px 0", fontSize: "14px" }}>{disease.description}</p>
-                          {disease.symptoms.length > 0 && (
-                            <p style={{ margin: "2px 0", fontSize: "12px", color: "#666" }}>
-                              Symptoms: {disease.symptoms.join(', ')}
-                            </p>
-                          )}
-                          {disease.treatments.length > 0 && (
-                            <p style={{ margin: "2px 0", fontSize: "12px", color: "#666" }}>
-                              Treatments: {disease.treatments.join(', ')}
-                            </p>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeDisease(index)}
-                          style={{ background: "#e74c3c", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px" }}
-                        >
-                          Remove
-                        </button>
+                {/* Working Hours */}
+                <div className="form-section">
+                  <h3>Working Hours</h3>
+                  <div className="form-grid">
+                    <div className="form-group">
+                      <label>Weekday Hours</label>
+                      <input
+                        type="text"
+                        name="workingHours.weekdays"
+                        value={formData.workingHours.weekdays}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Weekend Hours</label>
+                      <input
+                        type="text"
+                        name="workingHours.weekends"
+                        value={formData.workingHours.weekends}
+                        onChange={handleInputChange}
+                        className="form-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Image Upload */}
+                <div className="form-section">
+                  <h3>Department Image</h3>
+                  <div className="file-upload-container">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="file-input"
+                      id="department-image"
+                    />
+                    <label htmlFor="department-image" className="file-label">
+                      Choose Image
+                    </label>
+                  </div>
+                </div>
+
+                {/* Disease Management */}
+                <div className="form-section disease-section">
+                  <h3>Common Diseases</h3>
+                  
+                  <div className="disease-form">
+                    <div className="form-grid">
+                      <div className="form-group">
+                        <label>Disease Name</label>
+                        <input
+                          type="text"
+                          value={diseaseForm.name}
+                          onChange={(e) => setDiseaseForm(prev => ({ ...prev, name: e.target.value }))}
+                          className="form-input"
+                        />
                       </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+                      <div className="form-group">
+                        <label>Description</label>
+                        <input
+                          type="text"
+                          value={diseaseForm.description}
+                          onChange={(e) => setDiseaseForm(prev => ({ ...prev, description: e.target.value }))}
+                          className="form-input"
+                        />
+                      </div>
+                    </div>
 
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button 
-                  type="submit" 
-                  className="btn"
-                  disabled={loading}
-                  style={{ background: "#27ae60", color: "white" }}
-                >
-                  {loading ? "Saving..." : (editingDepartment ? "Update Department" : "Create Department")}
-                </button>
-                <button 
-                  type="button" 
-                  onClick={resetForm}
-                  className="btn"
-                  style={{ background: "#95a5a6", color: "white" }}
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
+                    <div className="form-grid">
+                      <div className="form-group">
+                        <label>Symptoms (comma separated)</label>
+                        <input
+                          type="text"
+                          value={diseaseForm.symptoms}
+                          onChange={(e) => setDiseaseForm(prev => ({ ...prev, symptoms: e.target.value }))}
+                          className="form-input"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Treatments (comma separated)</label>
+                        <input
+                          type="text"
+                          value={diseaseForm.treatments}
+                          onChange={(e) => setDiseaseForm(prev => ({ ...prev, treatments: e.target.value }))}
+                          className="form-input"
+                        />
+                      </div>
+                    </div>
+
+                    <button type="button" onClick={addDisease} className="add-disease-btn">
+                      Add Disease
+                    </button>
+                  </div>
+
+                  {formData.commonDiseases.length > 0 && (
+                    <div className="diseases-list">
+                      <h4>Added Diseases:</h4>
+                      {formData.commonDiseases.map((disease, index) => (
+                        <div key={index} className="disease-card">
+                          <div className="disease-info">
+                            <h5>{disease.name}</h5>
+                            <p>{disease.description}</p>
+                            {disease.symptoms.length > 0 && (
+                              <div className="disease-details">
+                                <strong>Symptoms:</strong> {disease.symptoms.join(', ')}
+                              </div>
+                            )}
+                            {disease.treatments.length > 0 && (
+                              <div className="disease-details">
+                                <strong>Treatments:</strong> {disease.treatments.join(', ')}
+                              </div>
+                            )}
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeDisease(index)}
+                            className="remove-disease-btn"
+                          >
+                            Remove
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Form Actions */}
+                <div className="form-actions">
+                  <button 
+                    type="submit" 
+                    className="submit-btn"
+                    disabled={loading}
+                  >
+                    {loading ? "Saving..." : (editingDepartment ? "Update Department" : "Create Department")}
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={resetForm}
+                    className="cancel-btn"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
 
         {/* Departments List */}
-        <div style={{ background: "white", padding: "20px", borderRadius: "10px" }}>
-          <h2>All Departments</h2>
+        <div className="departments-container">
+          <div className="departments-header">
+            <h2>All Departments</h2>
+            <div className="departments-count">
+              {departments.length} {departments.length === 1 ? 'Department' : 'Departments'}
+            </div>
+          </div>
+          
           {loading ? (
-            <p>Loading departments...</p>
+            <div className="loading-state">
+              <div className="loading-spinner"></div>
+              <p>Loading departments...</p>
+            </div>
           ) : departments.length === 0 ? (
-            <p>No departments found. Add your first department!</p>
+            <div className="empty-state">
+              <div className="empty-icon">🏥</div>
+              <h3>No departments found</h3>
+              <p>Add your first department to get started!</p>
+            </div>
           ) : (
-            <div style={{ display: "grid", gap: "20px" }}>
+            <div className="departments-grid">
               {departments.map((department) => (
-                <div key={department._id} style={{ 
-                  border: "1px solid #ddd", 
-                  borderRadius: "8px", 
-                  padding: "20px",
-                  display: "grid",
-                  gridTemplateColumns: "auto 1fr auto",
-                  gap: "20px",
-                  alignItems: "start"
-                }}>
+                <div key={department._id} className="department-card">
                   {department.image && (
-                    <img 
-                      src={department.image.url} 
-                      alt={department.name}
-                      style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px" }}
-                    />
+                    <div className="department-image">
+                      <img 
+                        src={department.image.url} 
+                        alt={department.name}
+                      />
+                    </div>
                   )}
                   
-                  <div>
-                    <h3 style={{ color: "#271776", marginBottom: "10px" }}>{department.name}</h3>
-                    <p style={{ marginBottom: "10px" }}>{department.description}</p>
+                  <div className="department-content">
+                    <div className="department-header-info">
+                      <h3>{department.name}</h3>
+                      {department.headOfDepartment && (
+                        <div className="department-head">
+                          <strong>Head:</strong> {department.headOfDepartment}
+                        </div>
+                      )}
+                    </div>
                     
-                    {department.headOfDepartment && (
-                      <p><strong>Head:</strong> {department.headOfDepartment}</p>
-                    )}
+                    <p className="department-description">{department.description}</p>
                     
-                    {department.services && department.services.length > 0 && (
-                      <p><strong>Services:</strong> {department.services.join(', ')}</p>
-                    )}
-                    
-                    {department.commonDiseases && department.commonDiseases.length > 0 && (
-                      <p><strong>Common Diseases:</strong> {department.commonDiseases.length} diseases covered</p>
-                    )}
-                    
-                    <p><strong>Working Hours:</strong> Weekdays: {department.workingHours?.weekdays}, Weekends: {department.workingHours?.weekends}</p>
+                    <div className="department-details">
+                      {department.services && department.services.length > 0 && (
+                        <div className="detail-item">
+                          <strong>Services:</strong>
+                          <div className="services-tags">
+                            {department.services.slice(0, 3).map((service, idx) => (
+                              <span key={idx} className="service-tag">{service}</span>
+                            ))}
+                            {department.services.length > 3 && (
+                              <span className="service-tag more">+{department.services.length - 3} more</span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      
+                      {department.commonDiseases && department.commonDiseases.length > 0 && (
+                        <div className="detail-item">
+                          <strong>Diseases Covered:</strong> {department.commonDiseases.length}
+                        </div>
+                      )}
+                      
+                      <div className="detail-item">
+                        <strong>Working Hours:</strong>
+                        <div className="working-hours">
+                          <div>Weekdays: {department.workingHours?.weekdays}</div>
+                          <div>Weekends: {department.workingHours?.weekends}</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   
-                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <div className="department-actions">
                     <button
                       onClick={() => handleEdit(department)}
-                      style={{ 
-                        background: "#f39c12", 
-                        color: "white", 
-                        border: "none", 
-                        padding: "8px 16px", 
-                        borderRadius: "4px",
-                        cursor: "pointer"
-                      }}
+                      className="edit-btn"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(department._id)}
-                      style={{ 
-                        background: "#e74c3c", 
-                        color: "white", 
-                        border: "none", 
-                        padding: "8px 16px", 
-                        borderRadius: "4px",
-                        cursor: "pointer"
-                      }}
+                      className="delete-btn"
                     >
                       Delete
                     </button>
