@@ -16,20 +16,32 @@ config({ path: "./Config/config.env" });
 
 
 
+// CORS configuration - must be before routes
+app.use(
+    cors({
+        origin: [
+            process.env.FRONTEND_URL, 
+            process.env.DASHBOARD_URL,
+            "https://hospital-management-system-using-mern-5ans.onrender.com",
+            "https://hospital-management-system-using-mern-7sqr.onrender.com",
+            "http://localhost:3000",
+            "http://localhost:5173",
+            "http://localhost:5174"
+        ],
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        credentials: true,
+        allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+        optionsSuccessStatus: 200
+    })
+);
+
+// Handle preflight requests
+app.options('*', cors());
+
 // Test route for default access
 app.get("/", (req, res) => {
   res.send("Server is up and running 🚀");
 });
-
-
-app.use(
-    cors({
-        origin: [process.env.FRONTEND_URL, process.env.DASHBOARD_URL],
-        methods: ["GET", "POST", "PUT", "DELETE"],
-        credentials: true,
-        allowedHeaders: ["Content-Type", "Authorization"]
-    })
-);
 
 app.use(cookieParser());
 
