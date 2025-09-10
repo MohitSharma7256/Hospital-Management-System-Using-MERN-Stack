@@ -1,19 +1,20 @@
 import React, { useContext, useState } from "react";
 import { TiHome } from "react-icons/ti";
-import { RiLogoutBoxFill } from "react-icons/ri";
+import { RiLogoutBoxFill, RiDashboardFill } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaUserDoctor } from "react-icons/fa6";
-import { MdAddModerator } from "react-icons/md";
+import { FaUserDoctor, FaUserInjured, FaUserPlus, FaHospital, FaNewspaper } from "react-icons/fa6";
+import { MdAddModerator, MdDashboard } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
-import { FaUserInjured } from "react-icons/fa";
+import { BiPlus } from "react-icons/bi";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import API from "../api";
 
 const Sidebar = () => {
   const [show, setShow] = useState(false);
+  const location = useLocation();
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -29,82 +30,144 @@ const Sidebar = () => {
 
   const navigateTo = useNavigate();
 
-  const gotoHomePage = () => {
-    navigateTo("/");
-    setShow(!show);
-  };
-  const gotoDoctorsPage = () => {
-    navigateTo("/doctors");
-    setShow(!show);
-  };
-  const gotoMessagesPage = () => {
-    navigateTo("/messages");
-    setShow(!show);
-  };
-  const gotoAddNewDoctor = () => {
-    navigateTo("/doctor/addnew");
-    setShow(!show);
-  };
-  const gotoAddNewAdmin = () => {
-    navigateTo("/admin/addnew");
-    setShow(!show);
-  };
-  const gotoPatientManagement = () => {
-    navigateTo("/patients");
-    setShow(!show);
+  const navigationItems = [
+    {
+      id: 1,
+      label: "Dashboard",
+      icon: <MdDashboard />,
+      path: "/",
+      onClick: () => { navigateTo("/"); setShow(false); }
+    },
+    {
+      id: 2,
+      label: "Doctors",
+      icon: <FaUserDoctor />,
+      path: "/doctors",
+      onClick: () => { navigateTo("/doctors"); setShow(false); }
+    },
+    {
+      id: 3,
+      label: "Patients",
+      icon: <FaUserInjured />,
+      path: "/patients",
+      onClick: () => { navigateTo("/patients"); setShow(false); }
+    },
+    {
+      id: 4,
+      label: "Departments",
+      icon: <FaHospital />,
+      path: "/departments",
+      onClick: () => { navigateTo("/departments"); setShow(false); }
+    },
+    {
+      id: 5,
+      label: "News",
+      icon: <FaNewspaper />,
+      path: "/news",
+      onClick: () => { navigateTo("/news"); setShow(false); }
+    },
+    {
+      id: 6,
+      label: "Add Doctor",
+      icon: <FaUserPlus />,
+      path: "/doctor/addnew",
+      onClick: () => { navigateTo("/doctor/addnew"); setShow(false); }
+    },
+    {
+      id: 7,
+      label: "Add Admin",
+      icon: <MdAddModerator />,
+      path: "/admin/addnew",
+      onClick: () => { navigateTo("/admin/addnew"); setShow(false); }
+    },
+    {
+      id: 8,
+      label: "Messages",
+      icon: <AiFillMessage />,
+      path: "/messages",
+      onClick: () => { navigateTo("/messages"); setShow(false); }
+    }
+  ];
+
+  const isActiveRoute = (path) => {
+    return location.pathname === path;
   };
 
   return (
     <>
       <nav
         style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
-        className={show ? "show sidebar" : "sidebar"}
+        className={show ? "modern-sidebar show" : "modern-sidebar"}
       >
-        <div className="links">
-          <div className="nav-item" onClick={gotoHomePage}>
-            <TiHome />
-            <span>Dashboard</span>
+        {/* Sidebar Header */}
+        <div className="sidebar-header">
+          <div className="hospital-logo">
+            <img src="/logo.png" alt="Shaan Hospital" className="sidebar-logo-img" />
+            <div className="hospital-info">
+              <h3>Shaan Hospital</h3>
+              <p>Admin Dashboard</p>
+            </div>
           </div>
-          <div className="nav-item" onClick={gotoDoctorsPage}>
-            <FaUserDoctor />
-            <span>Doctors</span>
+        </div>
+
+        {/* Navigation Links */}
+        <div className="sidebar-nav">
+          <div className="nav-section">
+            <span className="nav-section-title">Main</span>
+            {navigationItems.slice(0, 5).map((item) => (
+              <div 
+                key={item.id}
+                className={`nav-item ${isActiveRoute(item.path) ? 'active' : ''}`}
+                onClick={item.onClick}
+              >
+                <div className="nav-icon">{item.icon}</div>
+                <span className="nav-label">{item.label}</span>
+                {isActiveRoute(item.path) && <div className="active-indicator"></div>}
+              </div>
+            ))}
           </div>
-          <div className="nav-item" onClick={gotoPatientManagement}>
-            <FaUserInjured />
-            <span>Patients</span>
+
+          <div className="nav-section">
+            <span className="nav-section-title">Management</span>
+            {navigationItems.slice(5).map((item) => (
+              <div 
+                key={item.id}
+                className={`nav-item ${isActiveRoute(item.path) ? 'active' : ''}`}
+                onClick={item.onClick}
+              >
+                <div className="nav-icon">{item.icon}</div>
+                <span className="nav-label">{item.label}</span>
+                {isActiveRoute(item.path) && <div className="active-indicator"></div>}
+              </div>
+            ))}
           </div>
-          <div className="nav-item" onClick={() => { navigateTo("/departments"); setShow(!show); }}>
-            <MdAddModerator />
-            <span>Departments</span>
-          </div>
-          <div className="nav-item" onClick={() => { navigateTo("/news"); setShow(!show); }}>
-            <IoPersonAddSharp />
-            <span>News</span>
-          </div>
-          <div className="nav-item" onClick={gotoAddNewDoctor}>
-            <FaUserDoctor />
-            <span>Add Doctor</span>
-          </div>
-          <div className="nav-item" onClick={gotoAddNewAdmin}>
-            <MdAddModerator />
-            <span>Add Admin</span>
-          </div>
-          <div className="nav-item" onClick={gotoMessagesPage}>
-            <AiFillMessage />
-            <span>Messages</span>
-          </div>
-          <div className="nav-item" onClick={handleLogout}>
-            <RiLogoutBoxFill />
-            <span>Logout</span>
+        </div>
+
+        {/* Sidebar Footer */}
+        <div className="sidebar-footer">
+          <div className="nav-item logout-btn" onClick={handleLogout}>
+            <div className="nav-icon">
+              <RiLogoutBoxFill />
+            </div>
+            <span className="nav-label">Logout</span>
           </div>
         </div>
       </nav>
+
+      {/* Mobile Menu Toggle */}
       <div
-        className="wrapper"
+        className="mobile-menu-toggle"
         style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
       >
-        <GiHamburgerMenu className="hamburger" onClick={() => setShow(!show)} />
+        <button className="hamburger-btn" onClick={() => setShow(!show)}>
+          <GiHamburgerMenu />
+        </button>
       </div>
+
+      {/* Overlay for mobile */}
+      {show && (
+        <div className="sidebar-overlay" onClick={() => setShow(false)}></div>
+      )}
     </>
   );
 };

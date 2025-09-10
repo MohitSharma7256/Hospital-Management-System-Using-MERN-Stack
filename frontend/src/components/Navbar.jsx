@@ -30,7 +30,8 @@ const Navbar = () => {
     <>
       <nav className={"container"}>
         <div className="logo">
-          <img src="/logo.png" alt="logo" className="logo-img" />
+          <img src="/logo.png" alt="Shaan Hospital Logo" className="logo-img" />
+          <span className="hospital-name">Shaan Hospital</span>
         </div>
         <div className={show ? "navLinks showmenu" : "navLinks"}>
           <div className="links">
