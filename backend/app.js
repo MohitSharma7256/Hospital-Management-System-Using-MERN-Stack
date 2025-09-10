@@ -61,6 +61,11 @@ app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/appointment", appointmentRouter);
 
+// Additional routes without /api/v1 prefix for frontend compatibility
+app.use("/message", messageRouter);
+app.use("/user", userRouter);
+app.use("/appointment", appointmentRouter);
+
 
 dbConnection();
 
