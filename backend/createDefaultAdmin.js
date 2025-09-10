@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { config } from "dotenv";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // Load environment variables
 config({ path: "./Config/config.env" });
