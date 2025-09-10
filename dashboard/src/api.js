@@ -1,9 +1,9 @@
-// frontend/src/api.js
+// api.js
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://hospital-management-system-using-mern.onrender.com",
-  withCredentials: true, // cookies ke liye
+  baseURL: "https://hospital-management-system-using-mern.onrender.com", // Your BACKEND URL
+  withCredentials: true,
 });
 
 export default API;
