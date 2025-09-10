@@ -21,7 +21,8 @@ const PatientManagement = () => {
   const fetchPatients = async () => {
     try {
       const { data } = await axios.get(
-        'http://localhost:4000/api/v1/user/patients',
+        // 'http://localhost:4000/api/v1/user/patients',
+        "/api/v1/user/patients",
         { withCredentials: true }
       );
       setPatients(data.patients);
@@ -48,7 +49,9 @@ const PatientManagement = () => {
     if (window.confirm('Are you sure you want to delete this patient?')) {
       try {
         await axios.delete(
-          `http://localhost:4000/api/v1/user/user/${patientId}`,
+          // `http://localhost:4000/api/v1/user/user/${patientId}`,
+          `/api/v1/user/user/${patientId}`,
+
           { withCredentials: true }
         );
         toast.success('Patient deleted successfully');
@@ -62,7 +65,8 @@ const PatientManagement = () => {
   const handleSave = async () => {
     try {
       await axios.put(
-        `http://localhost:4000/api/v1/user/user/${selectedPatient._id}`,
+        // `http://localhost:4000/api/v1/user/user/${selectedPatient._id}`,
+         `/api/v1/user/user/${selectedPatient._id}`,
         selectedPatient,
         { withCredentials: true }
       );

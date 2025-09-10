@@ -13,6 +13,10 @@ import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import PatientManagement from "./components/PatientManagement";
 import "./App.css";
+import API from "./api";
+
+console.log("API Base URL 👉", API.defaults.baseURL);
+
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
@@ -22,7 +26,8 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/admin/me",
+          // "http://localhost:4000/api/v1/user/admin/me",
+          "/api/v1/user/admin/me",
           {
             withCredentials: true,
           }

@@ -12,6 +12,10 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Context } from "./main";
 import Login from "./Pages/Login";
+import API from "./api";
+
+console.log("API Base URL 👉", API.defaults.baseURL);
+
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, setUser } =
     useContext(Context);
@@ -20,7 +24,8 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:4000/api/v1/user/patient/me",
+          "/api/v1/user/patient/me",
+          // "http://localhost:4000/api/v1/user/patient/me",
           {
             withCredentials: true,
           }
