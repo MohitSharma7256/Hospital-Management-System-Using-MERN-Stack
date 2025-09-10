@@ -24,7 +24,7 @@ const AddNewAdmin = () => {
     e.preventDefault();
     try {
       const res = await API.post(
-        "/api/v1/user/admin/addnew",
+        "/user/admin/addnew",
         { firstName, lastName, email, phone, aadhar, dob, gender, password },
         {
           headers: { "Content-Type": "application/json" },

@@ -61,7 +61,7 @@ const AddNewDoctor = () => {
       formData.append("docAvatar", docAvatar);
 
       const res = await API.post(
-        "/api/v1/user/doctor/addnew",
+        "/user/doctor/addnew",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },

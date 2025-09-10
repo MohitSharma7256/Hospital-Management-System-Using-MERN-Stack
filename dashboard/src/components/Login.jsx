@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await API.post( // ✅ switched from axios.post → API.post
-        "/api/v1/user/login",
+        "/user/login",
         { email, password, role: "Admin" },
         {
           headers: { "Content-Type": "application/json" },

@@ -11,7 +11,7 @@ const Messages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const { data } = await API.get("/api/v1/message/getall"); // ✅ switched to API
+        const { data } = await API.get("/message/getall"); // ✅ switched to API
         setMessages(data.messages);
       } catch (error) {
         console.error(error.response?.data?.message || "Error fetching messages");

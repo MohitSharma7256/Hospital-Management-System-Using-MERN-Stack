@@ -20,7 +20,7 @@ const PatientManagement = () => {
 
   const fetchPatients = async () => {
     try {
-      const { data } = await API.get("/api/v1/user/patients");
+      const { data } = await API.get("/user/patients");
       setPatients(data.patients);
       setLoading(false);
     } catch (error) {
@@ -44,7 +44,7 @@ const PatientManagement = () => {
   const handleDelete = async (patientId) => {
     if (window.confirm("Are you sure you want to delete this patient?")) {
       try {
-        await API.delete(`/api/v1/user/user/${patientId}`);
+        await API.delete(`/user/user/${patientId}`);
         toast.success("Patient deleted successfully");
         fetchPatients();
       } catch (error) {
@@ -55,7 +55,7 @@ const PatientManagement = () => {
 
   const handleSave = async () => {
     try {
-      await API.put(`/api/v1/user/user/${selectedPatient._id}`, selectedPatient);
+      await API.put(`/user/user/${selectedPatient._id}`, selectedPatient);
       toast.success("Patient updated successfully");
       setShowModal(false);
       fetchPatients();

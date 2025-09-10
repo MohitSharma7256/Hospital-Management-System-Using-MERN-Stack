@@ -11,7 +11,7 @@ const Doctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const { data } = await API.get("/api/v1/user/doctors"); // ✅ simplified
+        const { data } = await API.get("/user/doctors"); // ✅ simplified
         setDoctors(data.doctors);
       } catch (error) {
         toast.error(error.response?.data?.message || "Failed to fetch doctors");

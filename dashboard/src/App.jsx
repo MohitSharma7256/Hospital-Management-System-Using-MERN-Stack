@@ -24,7 +24,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await API.get("/api/v1/user/admin/me");
+        const response = await API.get("/user/admin/me");
         setIsAuthenticated(true);
         setAdmin(response.data.user);
       } catch (error) {

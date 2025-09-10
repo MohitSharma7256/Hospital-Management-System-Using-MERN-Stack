@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await API.get("/api/v1/user/admin/logout");
+      const res = await API.get("/user/admin/logout");
       toast.success(res.data.message);
       setIsAuthenticated(false);
     } catch (err) {

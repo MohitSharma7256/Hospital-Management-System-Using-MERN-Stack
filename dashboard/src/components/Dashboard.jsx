@@ -21,7 +21,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const { data } = await API.get("/api/v1/appointment/getall"); // ✅ no need withCredentials
+        const { data } = await API.get("/appointment/getall"); // ✅ no need withCredentials
         setAppointments(data.appointments);
       } catch (error) {
         console.error("Error fetching appointments:", error);
@@ -31,7 +31,7 @@ const Dashboard = () => {
 
     const fetchStats = async () => {
       try {
-        const { data } = await API.get("/api/v1/user/stats"); // ✅ use API instance
+        const { data } = await API.get("/user/stats"); // ✅ use API instance
         setStats(data.stats);
       } catch (error) {
         console.error("Error fetching stats:", error);
@@ -45,7 +45,7 @@ const Dashboard = () => {
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
       const { data } = await API.put(
-        `/api/v1/appointment/update/${appointmentId}`,
+        `/appointment/update/${appointmentId}`,
         { status }
       );
       setAppointments((prevAppointments) =>
