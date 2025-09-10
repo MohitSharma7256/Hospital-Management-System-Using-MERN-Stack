@@ -1,7 +1,8 @@
-import axios from "axios";
+// import axios from "axios"; // ❌ Remove this import
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import API from "../api"; // ✅ Add this import
 
 const AppointmentForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -31,24 +32,26 @@ const AppointmentForm = () => {
   ];
 
   const [doctors, setDoctors] = useState([]);
+  
   useEffect(() => {
     const fetchDoctors = async () => {
-      const { data } = await axios.get(
-        // "http://localhost:4000/api/v1/user/doctors",
-        "/api/v1/user/doctors",
-        { withCredentials: true }
-      );
-      setDoctors(data.doctors);
-      console.log(data.doctors);
+      try {
+        const { data } = await API.get("/api/v1/user/doctors");
+        setDoctors(data.doctors);
+        console.log(data.doctors);
+      } catch (error) {
+        console.error("Error fetching doctors:", error);
+      }
     };
     fetchDoctors();
   }, []);
+
   const handleAppointment = async (e) => {
     e.preventDefault();
     try {
       const hasVisitedBool = Boolean(hasVisited);
-      const { data } = await axios.post(
-        // "http://localhost:4000/api/v1/appointment/post",
+      // ✅ Use API instance instead of axios
+      const { data } = await API.post(
         "/api/v1/appointment/post",
         {
           firstName,
@@ -66,24 +69,25 @@ const AppointmentForm = () => {
           address,
         },
         {
-          withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
+      
       toast.success(data.message);
-      setFirstName(""),
-        setLastName(""),
-        setEmail(""),
-        setPhone(""),
-        setNic(""),
-        setDob(""),
-        setGender(""),
-        setAppointmentDate(""),
-        setDepartment(""),
-        setDoctorFirstName(""),
-        setDoctorLastName(""),
-        setHasVisited(""),
-        setAddress("");
+      // Reset form
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhone("");
+      setNic("");
+      setDob("");
+      setGender("");
+      setAppointmentDate("");
+      setDepartment("Pediatrics");
+      setDoctorFirstName("");
+      setDoctorLastName("");
+      setHasVisited(false);
+      setAddress("");
     } catch (error) {
       toast.error(error.response.data.message);
     }

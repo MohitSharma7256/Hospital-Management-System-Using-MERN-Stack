@@ -1,8 +1,9 @@
-import axios from "axios";
+// import axios from "axios"; // ❌ Remove this import
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import API from "../api"; // ✅ Add this import
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -15,23 +16,19 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post(
-          // "http://localhost:4000/api/v1/user/login",
-          "/api/v1/user/login",
-          { email, password, role: "Patient" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setEmail("");
-          setPassword("");
-        });
+      const res = await API.post(
+        "/api/v1/user/login",
+        { email, password, role: "Patient" },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      toast.success(res.data.message);
+      setIsAuthenticated(true);
+      navigateTo("/");
+      setEmail("");
+      setPassword("");
     } catch (error) {
       toast.error(error.response.data.message);
     }

@@ -1,8 +1,8 @@
-import axios from "axios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import API from "../api";
 
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -21,29 +21,27 @@ const Register = () => {
   const handleRegistration = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post(
-          // "http://localhost:4000/api/v1/user/patient/register",
-          "/api/v1/user/patient/register",
-          { firstName, lastName, email, phone, aadhar, dob, gender, password, role: "Patient" },
-          {
-            withCredentials: true,
-            headers: { "Content-Type": "application/json" },
-          }
-        )
-        .then((res) => {
-          toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setPhone("");
-          setAadhar("");
-          setDob("");
-          setGender("");
-          setPassword("");
-        });
+      // ✅ Fixed: Proper async/await without mixing .then()
+      const res = await API.post(
+        "/api/v1/user/patient/register",
+        { firstName, lastName, email, phone, aadhar, dob, gender, password, role: "Patient" },
+        {
+          // ✅ Removed withCredentials (already in API config)
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      
+      toast.success(res.data.message);
+      setIsAuthenticated(true);
+      navigateTo("/");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPhone("");
+      setAadhar("");
+      setDob("");
+      setGender("");
+      setPassword("");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -128,7 +126,7 @@ const Register = () => {
           >
             <p style={{ marginBottom: 0 }}>Already Registered?</p>
             <Link
-              to={"/signin"}
+              to={"/login"}
               style={{ textDecoration: "none", color: "#271776ca" }}
             >
               Login Now

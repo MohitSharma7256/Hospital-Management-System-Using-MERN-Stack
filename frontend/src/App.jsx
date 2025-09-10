@@ -9,10 +9,9 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import { Context } from "./main";
 import Login from "./Pages/Login";
-import API from "./api";
+import API from "./api"; // ✅ Use this instead
 
 console.log("API Base URL 👉", API.defaults.baseURL);
 
@@ -23,13 +22,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          "/api/v1/user/patient/me",
-          // "http://localhost:4000/api/v1/user/patient/me",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await API.get("/api/v1/user/patient/me");
         setIsAuthenticated(true);
         setUser(response.data.user);
       } catch (error) {
