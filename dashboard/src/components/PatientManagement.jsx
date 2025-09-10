@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Context } from '../main';
-import { Navigate } from 'react-router-dom';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { FaEdit, FaTrash, FaEye } from 'react-icons/fa';
-import './PatientManagement.css';
+import React, { useState, useEffect, useContext } from "react";
+import { Context } from "../main";
+import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { FaEdit, FaTrash, FaEye } from "react-icons/fa";
+import "./PatientManagement.css";
+import API from "../api";
 
 const PatientManagement = () => {
   const { isAuthenticated } = useContext(Context);
@@ -20,15 +20,11 @@ const PatientManagement = () => {
 
   const fetchPatients = async () => {
     try {
-      const { data } = await axios.get(
-        // 'http://localhost:4000/api/v1/user/patients',
-        "/api/v1/user/patients",
-        { withCredentials: true }
-      );
+      const { data } = await API.get("/api/v1/user/patients");
       setPatients(data.patients);
       setLoading(false);
     } catch (error) {
-      toast.error('Failed to fetch patients');
+      toast.error("Failed to fetch patients");
       setLoading(false);
     }
   };
@@ -46,43 +42,33 @@ const PatientManagement = () => {
   };
 
   const handleDelete = async (patientId) => {
-    if (window.confirm('Are you sure you want to delete this patient?')) {
+    if (window.confirm("Are you sure you want to delete this patient?")) {
       try {
-        await axios.delete(
-          // `http://localhost:4000/api/v1/user/user/${patientId}`,
-          `/api/v1/user/user/${patientId}`,
-
-          { withCredentials: true }
-        );
-        toast.success('Patient deleted successfully');
+        await API.delete(`/api/v1/user/user/${patientId}`);
+        toast.success("Patient deleted successfully");
         fetchPatients();
       } catch (error) {
-        toast.error('Failed to delete patient');
+        toast.error("Failed to delete patient");
       }
     }
   };
 
   const handleSave = async () => {
     try {
-      await axios.put(
-        // `http://localhost:4000/api/v1/user/user/${selectedPatient._id}`,
-         `/api/v1/user/user/${selectedPatient._id}`,
-        selectedPatient,
-        { withCredentials: true }
-      );
-      toast.success('Patient updated successfully');
+      await API.put(`/api/v1/user/user/${selectedPatient._id}`, selectedPatient);
+      toast.success("Patient updated successfully");
       setShowModal(false);
       fetchPatients();
     } catch (error) {
-      toast.error('Failed to update patient');
+      toast.error("Failed to update patient");
     }
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setSelectedPatient(prev => ({
+    setSelectedPatient((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -98,30 +84,40 @@ const PatientManagement = () => {
     <section className="page">
       <div className="patient-management">
         <h1 className="form-title">PATIENT MANAGEMENT</h1>
-        
+
+        {/* Stats Section */}
         <div className="stats-summary">
           <div className="stat-item">
             <h3>{patients.length}</h3>
             <p>Total Patients</p>
           </div>
           <div className="stat-item">
-            <h3>{patients.filter(p => {
-              const lastLogin = new Date(p.lastLogin);
-              const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-              return lastLogin > oneDayAgo;
-            }).length}</h3>
+            <h3>
+              {
+                patients.filter((p) => {
+                  const lastLogin = new Date(p.lastLogin);
+                  const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+                  return lastLogin > oneDayAgo;
+                }).length
+              }
+            </h3>
             <p>Recent Logins (24h)</p>
           </div>
           <div className="stat-item">
-            <h3>{patients.filter(p => {
-              const createdAt = new Date(p.createdAt);
-              const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-              return createdAt > sevenDaysAgo;
-            }).length}</h3>
+            <h3>
+              {
+                patients.filter((p) => {
+                  const createdAt = new Date(p.createdAt);
+                  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+                  return createdAt > sevenDaysAgo;
+                }).length
+              }
+            </h3>
             <p>New This Week</p>
           </div>
         </div>
 
+        {/* Table Section */}
         <div className="table-container">
           <table className="patients-table">
             <thead>
@@ -151,8 +147,8 @@ const PatientManagement = () => {
                     <button onClick={() => handleEdit(patient)} title="Edit">
                       <FaEdit />
                     </button>
-                    <button 
-                      onClick={() => handleDelete(patient._id)} 
+                    <button
+                      onClick={() => handleDelete(patient._id)}
                       title="Delete"
                       className="delete-btn"
                     >
@@ -165,15 +161,15 @@ const PatientManagement = () => {
           </table>
         </div>
 
-        {/* Modal */}
+        {/* Modal Section */}
         {showModal && (
           <div className="modal-overlay" onClick={() => setShowModal(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>{editMode ? 'Edit Patient' : 'Patient Details'}</h2>
+                <h2>{editMode ? "Edit Patient" : "Patient Details"}</h2>
                 <button onClick={() => setShowModal(false)}>&times;</button>
               </div>
-              
+
               <div className="modal-body">
                 {editMode ? (
                   <div className="edit-form">
@@ -182,14 +178,14 @@ const PatientManagement = () => {
                         type="text"
                         name="firstName"
                         placeholder="First Name"
-                        value={selectedPatient?.firstName || ''}
+                        value={selectedPatient?.firstName || ""}
                         onChange={handleInputChange}
                       />
                       <input
                         type="text"
                         name="lastName"
                         placeholder="Last Name"
-                        value={selectedPatient?.lastName || ''}
+                        value={selectedPatient?.lastName || ""}
                         onChange={handleInputChange}
                       />
                     </div>
@@ -198,21 +194,21 @@ const PatientManagement = () => {
                         type="email"
                         name="email"
                         placeholder="Email"
-                        value={selectedPatient?.email || ''}
+                        value={selectedPatient?.email || ""}
                         onChange={handleInputChange}
                       />
                       <input
                         type="tel"
                         name="phone"
                         placeholder="Phone"
-                        value={selectedPatient?.phone || ''}
+                        value={selectedPatient?.phone || ""}
                         onChange={handleInputChange}
                       />
                     </div>
                     <div className="form-row">
                       <select
                         name="gender"
-                        value={selectedPatient?.gender || ''}
+                        value={selectedPatient?.gender || ""}
                         onChange={handleInputChange}
                       >
                         <option value="">Select Gender</option>
@@ -223,7 +219,11 @@ const PatientManagement = () => {
                       <input
                         type="date"
                         name="dob"
-                        value={selectedPatient?.dob ? new Date(selectedPatient.dob).toISOString().split('T')[0] : ''}
+                        value={
+                          selectedPatient?.dob
+                            ? new Date(selectedPatient.dob).toISOString().split("T")[0]
+                            : ""
+                        }
                         onChange={handleInputChange}
                       />
                     </div>
@@ -231,14 +231,15 @@ const PatientManagement = () => {
                       type="text"
                       name="aadhar"
                       placeholder="Aadhar Number"
-                      value={selectedPatient?.aadhar || ''}
+                      value={selectedPatient?.aadhar || ""}
                       onChange={handleInputChange}
                     />
                   </div>
                 ) : (
                   <div className="patient-details">
                     <div className="detail-row">
-                      <strong>Name:</strong> {selectedPatient?.firstName} {selectedPatient?.lastName}
+                      <strong>Name:</strong> {selectedPatient?.firstName}{" "}
+                      {selectedPatient?.lastName}
                     </div>
                     <div className="detail-row">
                       <strong>Email:</strong> {selectedPatient?.email}
@@ -250,29 +251,44 @@ const PatientManagement = () => {
                       <strong>Gender:</strong> {selectedPatient?.gender}
                     </div>
                     <div className="detail-row">
-                      <strong>Date of Birth:</strong> {new Date(selectedPatient?.dob).toLocaleDateString()}
+                      <strong>Date of Birth:</strong>{" "}
+                      {new Date(selectedPatient?.dob).toLocaleDateString()}
                     </div>
                     <div className="detail-row">
                       <strong>Aadhar:</strong> {selectedPatient?.aadhar}
                     </div>
                     <div className="detail-row">
-                      <strong>Registration Date:</strong> {new Date(selectedPatient?.createdAt).toLocaleString()}
+                      <strong>Registration Date:</strong>{" "}
+                      {new Date(selectedPatient?.createdAt).toLocaleString()}
                     </div>
                     <div className="detail-row">
-                      <strong>Last Login:</strong> {new Date(selectedPatient?.lastLogin).toLocaleString()}
+                      <strong>Last Login:</strong>{" "}
+                      {new Date(selectedPatient?.lastLogin).toLocaleString()}
                     </div>
                   </div>
                 )}
               </div>
-              
+
               <div className="modal-footer">
                 {editMode ? (
                   <>
-                    <button onClick={handleSave} className="save-btn">Save Changes</button>
-                    <button onClick={() => setShowModal(false)} className="cancel-btn">Cancel</button>
+                    <button onClick={handleSave} className="save-btn">
+                      Save Changes
+                    </button>
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="cancel-btn"
+                    >
+                      Cancel
+                    </button>
                   </>
                 ) : (
-                  <button onClick={() => setShowModal(false)} className="close-btn">Close</button>
+                  <button
+                    onClick={() => setShowModal(false)}
+                    className="close-btn"
+                  >
+                    Close
+                  </button>
                 )}
               </div>
             </div>

@@ -2,8 +2,8 @@ import { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import axios from "axios";
 import PasswordInput from "./PasswordInput";
+import API from "../api"; // ✅ use centralized API instance
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,15 +16,14 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        // "http://localhost:4000/api/v1/user/login",
+      const res = await API.post( // ✅ switched from axios.post → API.post
         "/api/v1/user/login",
         { email, password, role: "Admin" },
         {
-          withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
+
       toast.success(res.data.message);
       setIsAuthenticated(true);
       navigateTo("/");
@@ -38,37 +37,33 @@ const Login = () => {
       }
     }
   };
-  
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;
   }
 
   return (
-    <>
-      <section className="container form-component">
-        <img src="/logo.png" alt="logo" className="logo" />
-        <h1 className="form-title">WELCOME TO ZEECARE</h1>
-        <p>Only Admins Are Allowed To Access These Resources!</p>
-        <form onSubmit={handleLogin}>
-          <input
-            type="text"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <PasswordInput
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Login</button>
-          </div>
-        </form>
-      </section>
-    </>
+    <section className="container form-component">
+      <img src="/logo.png" alt="logo" className="logo" />
+      <h1 className="form-title">WELCOME TO ZEECARE</h1>
+      <p>Only Admins Are Allowed To Access These Resources!</p>
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <PasswordInput
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <div style={{ justifyContent: "center", alignItems: "center" }}>
+          <button type="submit">Login</button>
+        </div>
+      </form>
+    </section>
   );
 };
 

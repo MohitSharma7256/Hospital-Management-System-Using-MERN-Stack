@@ -1,3 +1,4 @@
+// dashboard/src/App.jsx
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
@@ -6,7 +7,6 @@ import AddNewDoctor from "./components/AddNewDoctor";
 import Messages from "./components/Messages";
 import Doctors from "./components/Doctors";
 import { Context } from "./main";
-import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
@@ -17,7 +17,6 @@ import API from "./api";
 
 console.log("API Base URL 👉", API.defaults.baseURL);
 
-
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
     useContext(Context);
@@ -25,13 +24,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          // "http://localhost:4000/api/v1/user/admin/me",
-          "/api/v1/user/admin/me",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await API.get("/api/v1/user/admin/me");
         setIsAuthenticated(true);
         setAdmin(response.data.user);
       } catch (error) {
@@ -48,11 +41,26 @@ const App = () => {
       <Routes>
         <Route path="/" element={isAuthenticated ? <Dashboard /> : <Login />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/doctor/addnew" element={isAuthenticated ? <AddNewDoctor /> : <Login />} />
-        <Route path="/admin/addnew" element={isAuthenticated ? <AddNewAdmin /> : <Login />} />
-        <Route path="/messages" element={isAuthenticated ? <Messages /> : <Login />} />
-        <Route path="/doctors" element={isAuthenticated ? <Doctors /> : <Login />} />
-        <Route path="/patients" element={isAuthenticated ? <PatientManagement /> : <Login />} />
+        <Route
+          path="/doctor/addnew"
+          element={isAuthenticated ? <AddNewDoctor /> : <Login />}
+        />
+        <Route
+          path="/admin/addnew"
+          element={isAuthenticated ? <AddNewAdmin /> : <Login />}
+        />
+        <Route
+          path="/messages"
+          element={isAuthenticated ? <Messages /> : <Login />}
+        />
+        <Route
+          path="/doctors"
+          element={isAuthenticated ? <Doctors /> : <Login />}
+        />
+        <Route
+          path="/patients"
+          element={isAuthenticated ? <PatientManagement /> : <Login />}
+        />
       </Routes>
       <ToastContainer position="top-center" />
     </Router>
