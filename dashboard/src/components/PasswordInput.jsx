@@ -1,36 +1,30 @@
-import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "./PasswordInput.css";
+import React, { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import './PasswordInput.css';
 
-const PasswordInput = ({
-  id,
-  name,
-  placeholder = "Password",
-  value,
-  onChange,
+const PasswordInput = ({ 
+  placeholder = "Password", 
+  value, 
+  onChange, 
   required = false,
   className = "",
-  style = {},
-  autoComplete = "current-password"
+  style = {}
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword(!showPassword);
   };
 
   return (
     <div className={`password-input-container ${className}`} style={style}>
       <input
-        id={id}
-        name={name}
         type={showPassword ? "text" : "password"}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         required={required}
         className="password-input"
-        autoComplete={autoComplete}
       />
       <button
         type="button"
