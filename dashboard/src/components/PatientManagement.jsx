@@ -83,7 +83,7 @@ const PatientManagement = () => {
   return (
     <section className="page">
       <div className="patient-management">
-        <h1 className="form-title">PATIENT MANAGEMENT</h1>
+        <h1 className="form-title">PATIENT MANAGEMENT - SHAAN HOSPITAL</h1>
 
         {/* Stats Section */}
         <div className="stats-summary">

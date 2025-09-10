@@ -61,13 +61,42 @@ const Sidebar = () => {
         className={show ? "show sidebar" : "sidebar"}
       >
         <div className="links">
-          <TiHome onClick={gotoHomePage} />
-          <FaUserDoctor onClick={gotoDoctorsPage} />
-          <FaUserInjured onClick={gotoPatientManagement} />
-          <MdAddModerator onClick={gotoAddNewAdmin} />
-          <IoPersonAddSharp onClick={gotoAddNewDoctor} />
-          <AiFillMessage onClick={gotoMessagesPage} />
-          <RiLogoutBoxFill onClick={handleLogout} />
+          <div className="nav-item" onClick={gotoHomePage}>
+            <TiHome />
+            <span>Dashboard</span>
+          </div>
+          <div className="nav-item" onClick={gotoDoctorsPage}>
+            <FaUserDoctor />
+            <span>Doctors</span>
+          </div>
+          <div className="nav-item" onClick={gotoPatientManagement}>
+            <FaUserInjured />
+            <span>Patients</span>
+          </div>
+          <div className="nav-item" onClick={() => { navigateTo("/departments"); setShow(!show); }}>
+            <MdAddModerator />
+            <span>Departments</span>
+          </div>
+          <div className="nav-item" onClick={() => { navigateTo("/news"); setShow(!show); }}>
+            <IoPersonAddSharp />
+            <span>News</span>
+          </div>
+          <div className="nav-item" onClick={gotoAddNewDoctor}>
+            <FaUserDoctor />
+            <span>Add Doctor</span>
+          </div>
+          <div className="nav-item" onClick={gotoAddNewAdmin}>
+            <MdAddModerator />
+            <span>Add Admin</span>
+          </div>
+          <div className="nav-item" onClick={gotoMessagesPage}>
+            <AiFillMessage />
+            <span>Messages</span>
+          </div>
+          <div className="nav-item" onClick={handleLogout}>
+            <RiLogoutBoxFill />
+            <span>Logout</span>
+          </div>
         </div>
       </nav>
       <div

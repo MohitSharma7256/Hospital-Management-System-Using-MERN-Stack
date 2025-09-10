@@ -8,6 +8,8 @@ import messageRouter from "./router/messageRouter.js";
 import {errorMiddleware} from "./middlewares/errorMiddleware.js";
 import userRouter from "./router/userRouter.js";
 import appointmentRouter from "./router/appointmentRouter.js";
+import departmentRouter from "./router/departmentRouter.js";
+import newsRouter from "./router/newsRouter.js";
 
 
 
@@ -60,11 +62,14 @@ app.use(
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/appointment", appointmentRouter);
+app.use("/api/v1/department", departmentRouter);
 
 // Additional routes without /api/v1 prefix for frontend compatibility
 app.use("/message", messageRouter);
 app.use("/user", userRouter);
-app.use("/appointment", appointmentRouter);
+app.use("/department", departmentRouter);
+app.use("/api/v1/news", newsRouter);
+app.use("/news", newsRouter);
 
 
 dbConnection();

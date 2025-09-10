@@ -47,6 +47,40 @@ p, span, a {
   line-height: 1.6;
 }
 
+/* Sidebar Navigation Styles */
+.sidebar .links .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
+.sidebar .links .nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(5px);
+}
+
+.sidebar .links .nav-item svg {
+  font-size: 20px;
+  min-width: 20px;
+}
+
+.sidebar .links .nav-item span {
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .sidebar .links .nav-item span {
+    display: none;
+  }
+}
+
 /* Container */
 .container {
   width: 100%;

@@ -6,6 +6,8 @@ import Login from "./components/Login";
 import AddNewDoctor from "./components/AddNewDoctor";
 import Messages from "./components/Messages";
 import Doctors from "./components/Doctors";
+import DepartmentManagement from "./components/DepartmentManagement";
+import NewsManagement from "./components/NewsManagement";
 import { Context } from "./main";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,6 +43,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={isAuthenticated ? <Dashboard /> : <Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/departments" element={<DepartmentManagement />} />
+        <Route path="/news" element={<NewsManagement />} />
         <Route
           path="/doctor/addnew"
           element={isAuthenticated ? <AddNewDoctor /> : <Login />}
@@ -60,6 +64,10 @@ const App = () => {
         <Route
           path="/patients"
           element={isAuthenticated ? <PatientManagement /> : <Login />}
+        />
+        <Route
+          path="/departments"
+          element={isAuthenticated ? <DepartmentManagement /> : <Login />}
         />
       </Routes>
       <ToastContainer position="top-center" />

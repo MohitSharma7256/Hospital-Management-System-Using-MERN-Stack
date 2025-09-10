@@ -79,9 +79,8 @@ const Dashboard = () => {
               </h5>
             </div>
             <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
-              Assumenda repellendus necessitatibus itaque.
+              Welcome to Shaan Hospital's administrative dashboard. Monitor appointments,
+              manage patient records, and oversee hospital operations efficiently.
             </p>
           </div>
         </div>

@@ -369,6 +369,68 @@ export const updateDoctor = catchAsyncErrors(async(req, res, next)=>{
     });
 });
 
+// Update user profile (for patients)
+export const updateUserProfile = catchAsyncErrors(async (req, res, next) => {
+    const { id } = req.params;
+    const { firstName, lastName, phone, dob } = req.body;
+
+    // Find the user
+    const user = await User.findById(id);
+    if (!user) {
+        return next(new ErrorHandler("User not found!", 404));
+    }
+
+    // Update only allowed fields
+    const updateData = {};
+    if (firstName) updateData.firstName = firstName;
+    if (lastName) updateData.lastName = lastName;
+    if (phone) updateData.phone = phone;
+    if (dob) updateData.dob = dob;
+
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    }).select("-password");
+
+    res.status(200).json({
+        success: true,
+        message: "Profile updated successfully!",
+        user: updatedUser,
+    });
+});
+
+// Change user password
+export const changePassword = catchAsyncErrors(async (req, res, next) => {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+        return next(new ErrorHandler("Please provide current and new password!", 400));
+    }
+
+    // Find user with password
+    const user = await User.findById(id).select("+password");
+    if (!user) {
+        return next(new ErrorHandler("User not found!", 404));
+    }
+
+    // Check current password
+    const isPasswordMatched = await user.comparePassword(currentPassword);
+    if (!isPasswordMatched) {
+        return next(new ErrorHandler("Current password is incorrect!", 400));
+    }
+
+    // Update password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Password changed successfully!",
+    });
+});
+
 // Get user statistics for dashboard
 export const getUserStats = catchAsyncErrors(async(req, res, next)=>{
     const totalUsers = await User.countDocuments();

@@ -1,45 +1,45 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import API from "../api";
 
 const Departments = () => {
-  const departmentsArray = [
-    {
-      name: "Pediatrics",
-      imageUrl: "/departments/pedia.jpg",
-    },
-    {
-      name: "Orthopedics",
-      imageUrl: "/departments/ortho.jpg",
-    },
-    {
-      name: "Cardiology",
-      imageUrl: "/departments/cardio.jpg",
-    },
-    {
-      name: "Neurology",
-      imageUrl: "/departments/neuro.jpg",
-    },
-    {
-      name: "Oncology",
-      imageUrl: "/departments/onco.jpg",
-    },
-    {
-      name: "Radiology",
-      imageUrl: "/departments/radio.jpg",
-    },
-    {
-      name: "Physical Therapy",
-      imageUrl: "/departments/therapy.jpg",
-    },
-    {
-      name: "Dermatology",
-      imageUrl: "/departments/derma.jpg",
-    },
-    {
-      name: "ENT",
-      imageUrl: "/departments/ent.jpg",
-    },
-  ];
+  const [departments, setDepartments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+  const fetchDepartments = async () => {
+    try {
+      const response = await API.get("/api/v1/department/all");
+      setDepartments(response.data.departments);
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+      // Fallback to static departments if API fails
+      setDepartments([
+        { name: "Pediatrics", image: { url: "/departments/pedia.jpg" } },
+        { name: "Orthopedics", image: { url: "/departments/ortho.jpg" } },
+        { name: "Cardiology", image: { url: "/departments/cardio.jpg" } },
+        { name: "Neurology", image: { url: "/departments/neuro.jpg" } },
+        { name: "Oncology", image: { url: "/departments/onco.jpg" } },
+        { name: "Radiology", image: { url: "/departments/radio.jpg" } },
+        { name: "Physical Therapy", image: { url: "/departments/therapy.jpg" } },
+        { name: "Dermatology", image: { url: "/departments/derma.jpg" } },
+        { name: "ENT", image: { url: "/departments/ent.jpg" } },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDepartmentClick = (departmentName) => {
+    const slug = departmentName.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/department/${slug}`);
+  };
 
   const responsive = {
     extraLarge: {
@@ -64,6 +64,15 @@ const Departments = () => {
     },
   };
 
+  if (loading) {
+    return (
+      <div className="container departments">
+        <h2>Departments</h2>
+        <p>Loading departments...</p>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="container departments">
@@ -77,12 +86,25 @@ const Departments = () => {
             "mobile",
           ]}
         >
-          {departmentsArray.map((depart, index) => {
+          {departments.map((department, index) => {
             return (
-              <div key={index} className="card">
-                <div className="depart-name">{depart.name}</div>
-                <img src={depart.imageUrl} alt="Department" />
-                
+              <div 
+                key={index} 
+                className="card"
+                onClick={() => handleDepartmentClick(department.name)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="depart-name">{department.name}</div>
+                <img 
+                  src={department.image?.url || "/departments/default.jpg"} 
+                  alt={department.name}
+                  onError={(e) => {
+                    e.target.src = "/departments/default.jpg";
+                  }}
+                />
+                <div className="department-overlay">
+                  <p>Click to learn more</p>
+                </div>
               </div>
             );
           })}

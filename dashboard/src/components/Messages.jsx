@@ -27,7 +27,7 @@ const Messages = () => {
 
   return (
     <section className="page messages">
-      <h1>MESSAGE</h1>
+      <h1>MESSAGES - SHAAN HOSPITAL</h1>
       <div className="banner">
         {messages && messages.length > 0 ? (
           messages.map((element) => (

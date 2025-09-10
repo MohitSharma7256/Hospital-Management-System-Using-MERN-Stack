@@ -15,7 +15,9 @@ import {
     updateUser, 
     deleteUser, 
     updateDoctor, 
-    getUserStats 
+    getUserStats,
+    updateUserProfile,
+    changePassword
 } from "../controller/userController.js";
 import { isAdminAuthenticated, isPatientAuthenticated } from "../middlewares/auth.js";
 
@@ -50,5 +52,9 @@ router.get("/stats", isAdminAuthenticated, getUserStats);
 router.put("/user/:id", isAdminAuthenticated, updateUser);
 router.delete("/user/:id", isAdminAuthenticated, deleteUser);
 router.put("/doctor/:id", isAdminAuthenticated, updateDoctor);
+
+// Patient profile management routes
+router.put("/update/:id", isPatientAuthenticated, updateUserProfile);
+router.put("/change-password/:id", isPatientAuthenticated, changePassword);
 
 export default router;

@@ -26,7 +26,7 @@ const Doctors = () => {
 
   return (
     <section className="page doctors">
-      <h1>DOCTORS</h1>
+      <h1>DOCTORS - SHAAN HOSPITAL</h1>
       <div className="banner">
         {doctors && doctors.length > 0 ? (
           doctors.map((element) => (

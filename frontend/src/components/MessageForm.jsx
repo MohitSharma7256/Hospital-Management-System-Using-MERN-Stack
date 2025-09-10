@@ -34,6 +34,7 @@ const MessageForm = () => {
   return (
     <div className="container form-component message-form">
       <h2>Send Us A Message</h2>
+      <p>Have questions or need assistance? We're here to help! Send us a message and our team at Shaan Hospital will get back to you promptly.</p>
       <form onSubmit={handleMessage}>
         <div>
           <input

@@ -1,4 +1,3 @@
-// import axios from "axios"; // ❌ Remove this import
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -50,7 +49,6 @@ const AppointmentForm = () => {
     e.preventDefault();
     try {
       const hasVisitedBool = Boolean(hasVisited);
-      // ✅ Use API instance instead of axios
       const { data } = await API.post(
         "/api/v1/appointment/post",
         {
